@@ -42,7 +42,7 @@ const Layout = React.memo((props) => {
       <Drawer anchor='left' open={DrawerToggler} onClose={() => setDrawerToggler(false)}>
         <List className={classes.list}>
           {['Расчитать проект', 'Как сдеать ремонт самому', 'Оформление заказа', 'Последние расчеты'].map((text, index) => (
-            <Link className={classes.link} to={location => ({ ...location, pathname: `/${listLinks[index]}` })}>
+            <Link key={text + index} className={classes.link} to={location => ({ ...location, pathname: `/${listLinks[index]}` })}>
               <ListItem button key={text} onClick={() => setDrawerToggler(false)}>
                 <ListItemIcon style={{color: green[500]}}>{listIcons[index]}</ListItemIcon>
                 <ListItemText primary={text} />
