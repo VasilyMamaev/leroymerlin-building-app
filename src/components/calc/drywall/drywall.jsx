@@ -1,16 +1,13 @@
 import React, { useState } from 'react'
-import { makeStyles, Container } from '@material-ui/core'
+import { Container, Paper, TextField, makeStyles, Button } from '@material-ui/core'
 import green from '@material-ui/core/colors/green'
-import Paper from '@material-ui/core/Paper'
 import ReportIcon from '@material-ui/icons/Report'
-import TextField from '@material-ui/core/TextField'
-import Button from '@material-ui/core/Button'
+import DrywallTable from './drywall-table/drywall-table'
 import { getCalcAC } from '../../../redux/calc-reducer'
-import { connect } from 'react-redux'
 import { getLastCalc } from '../../../redux/calc-selectors'
-import DrywallPartitionTable from './drywall-partition-table/drywall-partition-table'
+import { connect } from 'react-redux'
 
-const DrywallPartition = React.memo((props) => {
+const Drywall = React.memo((props) => {
 
   const useStyles = makeStyles({
     container: {
@@ -45,6 +42,14 @@ const DrywallPartition = React.memo((props) => {
       errorMessage: 'эррор',
       touched: false,
       validation: {}
+    },
+    windowsInWall: {
+      value: '0',
+      label: 'количество оконных проемов',
+      valid: false,
+      errorMessage: 'эррор',
+      touched: false,
+      validation: {}
     }
   })
 
@@ -62,33 +67,35 @@ const DrywallPartition = React.memo((props) => {
 
   const onSubmitForm = (evt) => {
     evt.preventDefault()
-    calculateResult(formControls.widthWall.value, formControls.heightWall.value, formControls.doorsInWall.value)
+    calculateResult(formControls.widthWall.value, formControls.heightWall.value, formControls.doorsInWall.value, formControls.windowsInWall.value)
     setIsCalculated(true)
   }
 
-  const calculateResult = (widthWall, heightWall, doorsInWall) => {
+  const calculateResult = (widthWall, heightWall, doorsInWall, windowsInWall) => {
     const ww = Number(widthWall)
     const hw = Number(heightWall)
     const dw = Number(doorsInWall)
+    const wiw = Number(windowsInWall)
 
-    const doorsArea = dw * 1.2
+    const doorsArea = (dw * 1.2) + (wiw * 0.4)
     const area = (ww * hw) - doorsArea
     const perimeter = (ww + hw) * 2
 
     props.addCalc(
       {
-        calcName: 'Расчет перегородки из ГКЛ',
+        calcName: 'Расчет обшивки стены ГКЛ',
         calcResult: {
-          gkl: Math.ceil(area / 1.5),
-          pn: Math.ceil(perimeter / 3) + (2 * dw),
+          gkl: Math.ceil(area / 3),
+          pn: Math.ceil(perimeter / 3) + (2 * dw + 3 * wiw),
           ps: Math.ceil((ww / 0.6) - 1),
-          screws: Math.ceil(area * 68),
-          putty: Math.ceil(area * 1.8),
-          ReinforcingTape: Math.ceil(ww > 1.2 ? (Math.ceil(ww / 0.6) - 2 ) * hw : 0),
+          gimbal: Math.ceil(((ww / 0.6) - 1) * 3),
+          screws: Math.ceil(area * 34),
+          putty: Math.ceil(area * 0.9),
+          ReinforcingTape: Math.ceil(ww > 1.2 ? (Math.ceil(ww / 1.2) - 2 ) * hw : 0),
           dowels: Math.ceil(area * 1.5),
           sealingTape: Math.ceil(perimeter),
-          primer: Math.ceil(area / 5),
-          finishPutty: Math.ceil(area * 2.4),
+          primer: Math.ceil(area / 10),
+          finishPutty: Math.ceil(area * 1.2),
           insulation: Math.ceil(area)
         }
       }
@@ -97,7 +104,7 @@ const DrywallPartition = React.memo((props) => {
 
   return (
     <Container maxWidth="sm" className={classes.container}>
-      <h2>Расчет перегородки из ГКЛ</h2>
+      <h2>Расчет обшивки стены ГКЛ</h2>
       <Paper>
         <Paper><ReportIcon></ReportIcon>Внимание! Дробное число вводиться через точку, например 2.5</Paper>
         <form onSubmit={onSubmitForm}>
@@ -120,11 +127,10 @@ const DrywallPartition = React.memo((props) => {
           <Button type='submit' variant='contained' style={{backgroundColor: green[500]}}>Расчитать</Button>
         </form>
       </Paper>
-      { isCalculated ? <DrywallPartitionTable lastCalc={props.lastCalc}/> : null }
+      { isCalculated ? <DrywallTable lastCalc={props.lastCalc}/> : null }
     </Container>
   )
 })
-
 
 let mapStateToProps = (state) => {
   return {
@@ -141,4 +147,4 @@ let mapDispatchToProps = (dispatch) => {
 
 }
 
-export default connect(mapStateToProps,mapDispatchToProps) (DrywallPartition)
+export default connect(mapStateToProps,mapDispatchToProps) (Drywall)

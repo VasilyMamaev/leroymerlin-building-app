@@ -4,6 +4,7 @@ import Layout from './hoc/layout/layout';
 import { Route, Switch } from 'react-router-dom';
 import Calc from './components/calc/calc';
 import DrywallPartition from './components/calc/drywall-partition/drywall-partition';
+import Drywall from './components/calc/drywall/drywall';
 
 function App() {
   return (
@@ -13,8 +14,11 @@ function App() {
           <Calc/>
         </Route>
         <Route path="/Calc/DrywallPartition">
-            <DrywallPartition/>
-          </Route>
+          <DrywallPartition/>
+        </Route>
+        <Route path="/Calc/Drywall">
+          <Drywall/>
+        </Route>
       </Switch>
     </Layout>
   );

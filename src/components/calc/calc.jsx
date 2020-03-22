@@ -17,7 +17,7 @@ const Calc = (props) => {
   const classes = useStyles()
 
 
-  const listLinks = ['DrywallPartition', '2', '3']
+  const listLinks = ['DrywallPartition', 'Drywall', '3']
 
   return (
     <Container maxWidth="sm" className={classes.container}>
