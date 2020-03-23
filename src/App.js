@@ -2,22 +2,18 @@ import React from 'react';
 import './App.css';
 import Layout from './hoc/layout/layout';
 import { Route, Switch } from 'react-router-dom';
-import Calc from './components/calc/calc';
-import DrywallPartition from './components/calc/drywall-partition/drywall-partition';
-import Drywall from './components/calc/drywall/drywall';
+import CalcNav from './components/calc/calc-nav';
+import CalcContainer from './components/calc/calc-container';
 
 function App() {
   return (
     <Layout>
       <Switch>
         <Route path="/Calc" exact>
-          <Calc/>
+          <CalcNav/>
         </Route>
-        <Route path="/Calc/DrywallPartition">
-          <DrywallPartition/>
-        </Route>
-        <Route path="/Calc/Drywall">
-          <Drywall/>
+        <Route path="/Calc/:calcId">
+          <CalcContainer/>
         </Route>
       </Switch>
     </Layout>
