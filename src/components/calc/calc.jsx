@@ -11,13 +11,16 @@ const Calc = React.memo((props) => {
       marginTop: 100,
       textAlign: 'center'
     },
+    result: {
+      marginTop: 10,
+      marginBottom: 10
+    }
   });
 
   const classes = useStyles()
 
   const [formControls, setFormCotrols] = useState(props.formState)
-  console.log(formControls)
-  const [isCalculated,setIsCalculated] = useState(false)
+  const [isCalculated,setIsCalculated] = useState(false)  
 
   const onControlValueChange = (value, controlName) => {
     setFormCotrols({
@@ -33,34 +36,34 @@ const Calc = React.memo((props) => {
     evt.preventDefault()
     props.calculateResult(...Object.keys(formControls).map((controlName) => formControls[controlName].value))
     setIsCalculated(true)
-  }
+    }
 
   return (
     <Container maxWidth="sm" className={classes.container}>
-      <h2>Расчет обшивки стены ГКЛ</h2>
-      <Paper>
-        <Paper><ReportIcon></ReportIcon>Внимание! Дробное число вводиться через точку, например 2.5</Paper>
-        <form onSubmit={onSubmitForm}>
-          {Object.keys(formControls).map((controlName, index) => {
-            return <div>
-              <TextField
-                key= {controlName}
-                type="number"
-                variant="outlined"
-                margin="normal"
-                required
-                id={`${controlName}`}
-                label={formControls[controlName].label}
-                name={`${controlName}`}
-                value={formControls[controlName].value}
-                onChange={(evt) => onControlValueChange(evt.target.value, `${controlName}`)}
-              />
-            </div> 
-          })}
-          <Button type='submit' variant='contained' style={{backgroundColor: green[500]}}>Расчитать</Button>
-        </form>
-      </Paper>
+      <h2>{props.tableProperties.header}</h2>
+      <Paper><ReportIcon></ReportIcon>Внимание! Дробное число вводиться через точку, например 2.5</Paper>
+      <form onSubmit={onSubmitForm}>
+        {Object.keys(formControls).map((controlName, index) => {
+          return <div>
+            <TextField
+              key= {controlName + index}
+              type="number"
+              variant="outlined"
+              margin="normal"
+              required
+              id={`${controlName}`}
+              label={formControls[controlName].label}
+              name={`${controlName}`}
+              value={formControls[controlName].value}
+              onChange={(evt) => onControlValueChange(evt.target.value, `${controlName}`)}
+            />
+          </div> 
+        })}
+        <Button type='submit' variant='contained' style={{backgroundColor: green[500]}}>Расчитать</Button>
+      </form>
+      <Paper elevation={3} className={classes.result}>
       { isCalculated ? <CalcTable tableProperties={props.tableProperties} lastCalc={props.lastCalc}/> : null }
+      </Paper>
     </Container>
   )
 })

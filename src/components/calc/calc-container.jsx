@@ -76,6 +76,7 @@ const CalcContainer = React.memo((props) => {
   }
 
   const DrywallTableProperties = {
+    header: 'Расчет обшивки стены ГКЛ',
     names: ['ГКЛ', 'профиль ПН', 'профиль ПС','подвесы',
     'саморезы', 'шпаклевка', 'армирующая лента', 'дюбель-гвоздь',
     'демпферная лента', 'грунтовка', 'финишная шпаклевка', 'звукоизоляция'],
@@ -141,6 +142,7 @@ const CalcContainer = React.memo((props) => {
   }
 
   const DrywallPartitionTableProperties = {
+    header: 'Расчет перегородки из ГКЛ',
     names: ['ГКЛ', 'профиль ПН', 'профиль ПС',
     'саморезы', 'шпаклевка', 'армирующая лента', 'дюбель-гвоздь',
     'демпферная лента', 'грунтовка', 'финишная шпаклевка', 'звукоизоляция'],
@@ -149,8 +151,70 @@ const CalcContainer = React.memo((props) => {
   }
 
 
+  //props for DrywallCeiling
+  const DrywallCeilingFormState = {
+    widthCeiling: {
+      value: '',
+      label: 'длина потолка',
+      valid: false,
+      errorMessage: 'эррор',
+      touched: false,
+      validation: {}
+    },
+    heightCeiling: {
+      value: '',
+      label: 'ширина потолка',
+      valid: false,
+      errorMessage: 'эррор',
+      touched: false,
+      validation: {}
+    }
+  }
+
+  const DrywallCeilingCalculateResult = (lengthCeiling, widthCeiling) => {
+    const lc = Number(lengthCeiling)
+    const wc = Number(widthCeiling)
+
+    const area = (lc * wc)
+    const perimeter = (lc + wc) * 2
+    const ps = Math.ceil((lc / 3) * (wc / 0.6 - 1) + (wc / 3) * (lc / 0.6 - 1))
+
+    props.addCalc(
+      {
+        calcName: 'Расчет потолка из ГКЛ',
+        calcResult: {
+          gkl: Math.ceil(area / 3),
+          pn: Math.ceil(perimeter / 3),
+          ps: ps,
+          gimbal: Math.ceil(ps * 1.5),
+          krab: Math.ceil(area / 1.2),
+          screws: Math.ceil(area * 34),
+          putty: Math.ceil(area * 0.9),
+          ReinforcingTape: Math.ceil(lc > 1.2 ? (Math.ceil(lc / 0.6) - 2 ) * wc : 0),
+          dowels: Math.ceil(area * 1.5),
+          sealingTape: Math.ceil(perimeter),
+          primer: Math.ceil(area / 5),
+          insulation: Math.ceil(area),
+          finishPutty: Math.ceil(area * 2.4)
+        }
+      }
+    ) 
+  }
+
+  const DrywallCeilingTableProperties = {
+    header: 'Расчет потолка из ГКЛ',
+    names: ['ГКЛ 2500х1200 9,5мм', 'профиль ПН 27х28', 'профиль ПП 60х27',
+    'подвес прямой', 'соединитель одноуровневый "краб"', 'Саморезы 3.2*25 для гипсокартона',
+    'шпаклевка универсальная', 'армирующая лента "серпянка"', 'дюбель-гвозди 6/40',
+    'лента уплотнительная', 'грунтовка', 'минеральная вата', 'финишная шпаклевка'],
+    units: ['шт.', 'шт.', 'шт.', 'шт.', 'шт.', 'шт.', 'кг', 'пог.м', 'шт',
+    'пог.м', 'л', 'кв.м', 'кг']
+  }
+
   //render
   let calcId = props.match.params.calcId
+  
+  
 
   switch (calcId) {
     case 'DrywallPartition':
@@ -159,7 +223,7 @@ const CalcContainer = React.memo((props) => {
           calculateResult={DrywallPartitionCalculateResult}
           formState={DrywallPartitionFormState}
           lastCalc={props.lastCalc}
-          tableProperties={DrywallTableProperties}
+          tableProperties={DrywallPartitionTableProperties}
         />
       )
     case 'Drywall':
@@ -168,7 +232,17 @@ const CalcContainer = React.memo((props) => {
           calculateResult={DrywallCalculateResult}
           formState={DrywallFormState}
           lastCalc={props.lastCalc}
-          tableProperties={DrywallPartitionTableProperties}
+          tableProperties={DrywallTableProperties}
+        />
+      )
+    case 'DrywallCeiling':
+      return (
+        <Calc 
+          calculateResult={DrywallCeilingCalculateResult}
+          formState={DrywallCeilingFormState}
+          lastCalc={props.lastCalc}
+          tableProperties={DrywallCeilingTableProperties}
+          history={props.history}
         />
       )
     default:
