@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { getLastCalc } from '../../redux/calc-selectors'
-import { getCalcAC } from '../../redux/calc-reducer'
+import { addCalcTC } from '../../redux/calc-reducer'
 import Calc from './calc'
 
 const CalcContainer = React.memo((props) => {
@@ -45,6 +45,8 @@ const CalcContainer = React.memo((props) => {
   }
 
   const DrywallCalculateResult = (widthWall, heightWall, doorsInWall, windowsInWall) => {
+    let now = Date.now()
+
     const ww = Number(widthWall)
     const hw = Number(heightWall)
     const dw = Number(doorsInWall)
@@ -57,6 +59,7 @@ const CalcContainer = React.memo((props) => {
     props.addCalc(
       {
         calcName: 'Расчет обшивки стены ГКЛ',
+        calcDate: now,
         calcResult: {
           gkl: Math.ceil(area / 3),
           pn: Math.ceil(perimeter / 3) + (2 * dw + 3 * wiw),
@@ -77,8 +80,8 @@ const CalcContainer = React.memo((props) => {
 
   const DrywallTableProperties = {
     header: 'Расчет обшивки стены ГКЛ',
-    names: ['ГКЛ', 'профиль ПН', 'профиль ПС','подвесы',
-    'саморезы', 'шпаклевка', 'армирующая лента', 'дюбель-гвоздь',
+    names: ['ГКЛ 2500х1200 12,5мм', 'профиль ППН 27х28', 'профиль ПП 60х27',
+    'саморезы 3.2*25', 'шпаклевка', 'армирующая лента', 'дюбель-гвоздь 6/40',
     'демпферная лента', 'грунтовка', 'финишная шпаклевка', 'звукоизоляция'],
     units: ['шт.', 'шт.', 'шт.', 'шт.', 'шт.', 'кг', 'пог.м', 'шт',
     'пог.м', 'л', 'кг', 'кв.м']
@@ -113,6 +116,8 @@ const CalcContainer = React.memo((props) => {
   }
 
   const DrywallPartitionCalculateResult = (widthWall, heightWall, doorsInWall) => {
+    let now = Date.now()
+
     const ww = Number(widthWall)
     const hw = Number(heightWall)
     const dw = Number(doorsInWall)
@@ -124,6 +129,7 @@ const CalcContainer = React.memo((props) => {
     props.addCalc(
       {
         calcName: 'Расчет перегородки из ГКЛ',
+        calcDate: now,
         calcResult: {
           gkl: Math.ceil(area / 1.5),
           pn: Math.ceil(perimeter / 3) + (2 * dw),
@@ -143,8 +149,8 @@ const CalcContainer = React.memo((props) => {
 
   const DrywallPartitionTableProperties = {
     header: 'Расчет перегородки из ГКЛ',
-    names: ['ГКЛ', 'профиль ПН', 'профиль ПС',
-    'саморезы', 'шпаклевка', 'армирующая лента', 'дюбель-гвоздь',
+    names: ['ГКЛ 2500х1200 12,5мм', 'профиль ПН 50х40', 'профиль ПС 50х50',
+    'саморезы 3.2*25 ', 'шпаклевка', 'армирующая лента', 'дюбель-гвоздь 6/40',
     'демпферная лента', 'грунтовка', 'финишная шпаклевка', 'звукоизоляция'],
     units: ['шт.', 'шт.', 'шт.', 'шт.', 'кг', 'пог.м', 'шт',
     'пог.м', 'л', 'кг', 'кв.м']
@@ -172,6 +178,8 @@ const CalcContainer = React.memo((props) => {
   }
 
   const DrywallCeilingCalculateResult = (lengthCeiling, widthCeiling) => {
+    let now = Date.now()
+
     const lc = Number(lengthCeiling)
     const wc = Number(widthCeiling)
 
@@ -182,6 +190,7 @@ const CalcContainer = React.memo((props) => {
     props.addCalc(
       {
         calcName: 'Расчет потолка из ГКЛ',
+        calcDate: now,
         calcResult: {
           gkl: Math.ceil(area / 3),
           pn: Math.ceil(perimeter / 3),
@@ -203,7 +212,7 @@ const CalcContainer = React.memo((props) => {
 
   const DrywallCeilingTableProperties = {
     header: 'Расчет потолка из ГКЛ',
-    names: ['ГКЛ 2500х1200 9,5мм', 'профиль ПН 27х28', 'профиль ПП 60х27',
+    names: ['ГКЛ 2500х1200 9,5мм', 'профиль ППН 27х28', 'профиль ПП 60х27',
     'подвес прямой', 'соединитель одноуровневый "краб"', 'Саморезы 3.2*25 для гипсокартона',
     'шпаклевка универсальная', 'армирующая лента "серпянка"', 'дюбель-гвозди 6/40',
     'лента уплотнительная', 'грунтовка', 'минеральная вата', 'финишная шпаклевка'],
@@ -259,10 +268,9 @@ let mapStateToProps = (state) => {
 let mapDispatchToProps = (dispatch) => {
   return {
     addCalc: (calc) => {
-      dispatch(getCalcAC(calc))
+      dispatch(addCalcTC(calc))
     }
   }
-
 }
 
 export default compose(

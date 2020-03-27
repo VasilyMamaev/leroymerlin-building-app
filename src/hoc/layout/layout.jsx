@@ -34,10 +34,10 @@ const Layout = React.memo((props) => {
   const [DrawerToggler, setDrawerToggler] = useState(false)
 
   const listIcons = [<SquareFootIcon/>, <EmojiObjectsIcon/>, <LocalGroceryStoreIcon/>, <ArchiveIcon style={{color: green[500]}}/>]
-  const listLinks = ['Calc', 'Learn', 'Order', 'Last-calculation']
+  const listLinks = ['Calc', 'Learn', 'Order', 'LastCalcs']
 
   return (
-    <>
+    <div>
       <Button className={classes.menuIcon} onClick={() => setDrawerToggler(true)}><MenuIcon/></Button>
       <Drawer anchor='left' open={DrawerToggler} onClose={() => setDrawerToggler(false)}>
         <List className={classes.list}>
@@ -55,7 +55,7 @@ const Layout = React.memo((props) => {
       <main>
         {props.children}
       </main>
-    </>
+    </div>
   )
 })
 

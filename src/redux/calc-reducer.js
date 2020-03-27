@@ -1,3 +1,5 @@
+import { lastCalcsAPI } from "../api/api"
+
 const GET_CALC = 'GET_CALC'
 
 const initialState = {
@@ -18,6 +20,13 @@ const calcReducer = (state = initialState, action) => {
 
 export const getCalcAC = (calc) => {
   return {type: GET_CALC, calc}
+}
+
+export const addCalcTC = (calc) => {
+  return (dispatch) => {
+    dispatch(getCalcAC(calc))
+    lastCalcsAPI.postCalc(calc)
+  }
 }
 
 

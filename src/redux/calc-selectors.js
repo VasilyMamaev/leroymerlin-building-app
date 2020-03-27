@@ -9,3 +9,8 @@ export const getLastCalc = createSelector(getLastCalcSelector,
     let length = lastCalcs.length
     return lastCalcs[length - 1]
 })
+
+export const getLastCalcs = createSelector(getLastCalcSelector,
+  (lastCalcs) => {
+    return lastCalcs.slice(-20)
+})

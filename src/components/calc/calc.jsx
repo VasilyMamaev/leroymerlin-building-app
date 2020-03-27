@@ -9,11 +9,20 @@ const Calc = React.memo((props) => {
   const useStyles = makeStyles({
     container: {
       marginTop: 100,
-      textAlign: 'center'
+      textAlign: 'center',
+      backgroundColor: 'white',
+      padding: 10,
+      borderRadius: 5
     },
     result: {
       marginTop: 10,
       marginBottom: 10
+    },
+    warning: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: '#CDCDCD'
     }
   });
 
@@ -41,7 +50,7 @@ const Calc = React.memo((props) => {
   return (
     <Container maxWidth="sm" className={classes.container}>
       <h2>{props.tableProperties.header}</h2>
-      <Paper><ReportIcon></ReportIcon>Внимание! Дробное число вводиться через точку, например 2.5</Paper>
+      <Paper className={classes.warning}><ReportIcon style={{color: 'red'}}></ReportIcon>Внимание! Дробное число вводиться через точку, например 2.5</Paper>
       <form onSubmit={onSubmitForm}>
         {Object.keys(formControls).map((controlName, index) => {
           return <div>

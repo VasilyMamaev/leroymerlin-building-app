@@ -12,6 +12,11 @@ const CalcNav = (props) => {
       color: 'black',
       textDecoration: 'none'
     },
+    root: {
+      width: '100%',
+      maxWidth: 360,
+      backgroundColor: 'white',
+    },
   });
 
   const classes = useStyles()
@@ -21,7 +26,7 @@ const CalcNav = (props) => {
 
   return (
     <Container maxWidth="sm" className={classes.container}>
-      <List>
+      <List component="nav" className={classes.root} aria-label="mailbox folders">
         {['Расчет прегородки из ГКЛ', 'Обшивка стен ГКЛ на металлическом каркасе', 'Обшивка потолка ГКЛ на металлическом каркасе'].map((text, index) => (
           <div key={text}>
             <Link to={`Calc/${listLinks[index]}`} className={classes.link}>
