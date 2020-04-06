@@ -19,10 +19,12 @@ const Calc = React.memo((props) => {
       marginBottom: 10
     },
     warning: {
+      margin: '0 auto',
+      width: '60%',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: '#CDCDCD'
+      backgroundColor: '#e7e7e7'
     }
   });
 
@@ -50,7 +52,7 @@ const Calc = React.memo((props) => {
   return (
     <Container maxWidth="sm" className={classes.container}>
       <h2>{props.tableProperties.header}</h2>
-      <Paper className={classes.warning}><ReportIcon style={{color: 'red'}}></ReportIcon>Внимание! Дробное число вводиться через точку, например 2.5</Paper>
+      <Paper className={classes.warning}><ReportIcon style={{color: '#E94A2F', marginRight: 4}}></ReportIcon>Введите значения в метрах*</Paper>
       <form onSubmit={onSubmitForm}>
         {Object.keys(formControls).map((controlName, index) => {
           return <div>

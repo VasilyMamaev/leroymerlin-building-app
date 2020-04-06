@@ -5,8 +5,10 @@ const CalcTable = (props) => {
 
   const useStyles = makeStyles({
     table: {
-      minWidth: '100%',
+      width: '95%',
     },
+    tableRow: {
+    }
   });
 
   const classes = useStyles()
@@ -18,9 +20,9 @@ const CalcTable = (props) => {
   useEffect(() => {resultRef.current.scrollIntoView({block: 'start', behavior: 'smooth'})}, [])
 
   return (
-    <Table className={classes.table} ref={resultRef}>
+    <Table className={classes.table} ref={resultRef} padding="default">
       <TableHead>
-        <TableRow>
+        <TableRow className={classes.tableRow}>
           <TableCell>Наименование</TableCell>
           <TableCell>Количество</TableCell>
           <TableCell>Единица измерения</TableCell>
@@ -29,7 +31,7 @@ const CalcTable = (props) => {
       <TableBody>
         { props.tableProperties.names.map((name, index) => {
           return (
-          <TableRow key={name + index}>
+          <TableRow key={name + index} className={classes.tableRow}>
             <TableCell>{name}</TableCell>
             <TableCell align='center'>{values[index]}</TableCell>
             <TableCell align='center'>{props.tableProperties.units[index]}</TableCell>

@@ -22,8 +22,8 @@ const Layout = React.memo((props) => {
     },
     menuIcon: {
       position: "absolute",
-      left: 70,
-      top: 30,
+      left: '5%',
+      top: '5%',
       height: 40,
       width: 40,
     }
